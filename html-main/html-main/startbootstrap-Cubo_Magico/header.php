@@ -10,6 +10,14 @@
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <style>
+    @media (min-width: 992px) {
+      .navbar-nav .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0; /* Evita que o menu suma ao mover o mouse */
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- NAVBAR -->
@@ -23,8 +31,18 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#minhaConta">Minha Conta</a></li>
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item dropdown">
+            <a class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle"></i> Minha conta
+            </a>
+            <div class="dropdown-menu dropdown-menu-end p-3 text-center" style="width: 230px;">
+              <button class="btn btn-dark w-100 fw-bold mb-2">Entrar ></button>
+              <div class="text-muted small mb-2">ou</div>
+              <span class="small" style="color: black;">Cliente novo? <a href="#" class="text-dark fw-bold">Cadastre-se</a></span>
+            </div>
+          </li>
+
           <li class="nav-item"><a class="nav-link" href="#carrinho">Carrinho</a></li>
         </ul>
       </div>
