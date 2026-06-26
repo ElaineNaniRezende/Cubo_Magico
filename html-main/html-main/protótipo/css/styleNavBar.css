@@ -1,0 +1,72 @@
+/*Seletor universal( aplica em toda a página) */
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.divHeader {
+    text-align: center;/*Define como centro*/
+    padding-top: 10px;/*Define espaçamento suerior*/
+    padding-bottom: 10px;/*Define espaçamento inferior*/
+    margin-bottom: 20px;/*Define margem inferior*/
+}
+.divConteudo {
+    margin: 50px;
+    display: flex; /*Ativa o FlexBox*/
+    flex-wrap: wrap;/*Permite quebrar linha se faltar espaço*/
+    justify-content: center;/*Define como centro os elementos da viv*/
+    gap: 20px;/*Espaçamento entre os produtos*/
+    padding: 20px;/*espaçamento interno*/
+    flex: 1;
+}
+
+.divFooter {
+    text-align: center;
+    background-color: #333;
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    position: fixed;/*Fixar elemento na tela*/
+    bottom: 0;/*gruda no fndo da janela*/
+    left: 0;/*alinha na esquerda*/
+    width: 100%;/*Ocupa toda a largura da Página*/
+}
+
+h2, p {
+    margin: 10px;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    padding-bottom:  50px;
+}
+
+ul {
+    list-style-type: none;/*Remove parcadores padrões da lista(bolinhas)*/
+    margin: 0;/*remove a margin*/
+    padding: 0;/*Remove espaçamentoda lista*/
+    background-color: #333;/*Define cor do fundo*/
+    overflow: hidden; /*Garante que o fundo da barra de navegação tenha elementos flutuantes*/
+    position: sticky;/*Faz barra 'grudar' no topo ao rolar a barra*/
+    top: 0;/*posição fixa no topo da janela*/
+}
+
+ul li {
+    float: left;/*Flutua na esquerda, alinhando horizontalmente*/
+}
+
+ul li a {
+    display: block;/*Faça com que o link ocupe toda a área do ítem da lista (bloco)*/
+    color: white;
+    text-align: center;
+    padding: 14px 16px;/*ceia espaçamento interno (vertical, horizontal)*/
+    text-decoration: none;/*Retira o sublinhado*/
+}
+ul li a:hover {
+    background-color: #111111;/*ao passar o mouse muda a cor de fundo*/
+}
+
+ul li a.active {
+    background-color: red;
+}
