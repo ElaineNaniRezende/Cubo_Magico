@@ -3,14 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 09/06/2026 às 01:50
+-- Tempo de geração: 26/06/2026 às 15:50
 -- Versão do servidor: 8.0.40
 -- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -20,19 +19,21 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `shoptb`
 --
+CREATE DATABASE IF NOT EXISTS `shoptb`;
+USE `shoptb`;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `anuncios`
+-- Estrutura para tabela `anuncios` (No seu sistema representam os Cubos Mágicos e Jogos)
 --
 
 CREATE TABLE `anuncios` (
   `idAnuncio` int NOT NULL,
   `Usuarios_idUsuario` int NOT NULL,
   `fotoAnuncio` varchar(100) NOT NULL,
-  `tituloAnuncio` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `categoriaAnuncio` varchar(20) NOT NULL,
+  `tituloAnuncio` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `categoriaAnuncio` varchar(30) NOT NULL,
   `descricaoAnuncio` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `valorAnuncio` decimal(10,2) NOT NULL,
   `dataAnuncio` date NOT NULL,
@@ -41,12 +42,12 @@ CREATE TABLE `anuncios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Despejando dados para a tabela `anuncios`
+-- Despejando dados para a tabela `anuncios` (Produtos da sua Loja de Cubos)
 --
 
 INSERT INTO `anuncios` (`idAnuncio`, `Usuarios_idUsuario`, `fotoAnuncio`, `tituloAnuncio`, `categoriaAnuncio`, `descricaoAnuncio`, `valorAnuncio`, `dataAnuncio`, `horaAnuncio`, `statusAnuncio`) VALUES
-(1, 4, 'assets/img/PS5_PRO.jpg', 'console', 'Eletrônicos', 'copoo', 80.00, '2026-04-27', '20:57:12', 'disponivel'),
-(2, 5, 'assets/img/iPhone17.jpg', 'iPhone', 'Eletrônicos', 'utilidade', 100.00, '2026-04-27', '20:59:45', 'disponivel');
+(1, 4, 'assets/img/cubo_3x3.jpg', 'Cubo Mágico 3x3x3 Moyu Meilong', 'Cubos Tradicionais', 'Cubo mágico profissional com giro rápido, ideal para iniciantes e competidores.', 39.90, '2026-06-26', '15:50:00', 'disponivel'),
+(2, 4, 'assets/img/pyraminx.jpg', 'Cubo Mágico Pyraminx QiYi Magnético', 'Cubos Modificados', 'Cubo em formato de pirâmide com alinhamento magnético para maior precisão.', 65.00, '2026-06-26', '15:52:00', 'disponivel');
 
 -- --------------------------------------------------------
 
@@ -60,7 +61,7 @@ CREATE TABLE `compras` (
   `Anuncios_idAnuncio` int NOT NULL,
   `dataCompra` date NOT NULL,
   `novaCompra` time NOT NULL,
-  `valor_Compra` decimal(10,0) NOT NULL
+  `valor_Compra` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -85,11 +86,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`idUsuario`, `fotoUsuario`, `nomeUsuario`, `dataNascimentoUsuario`, `cidadeUsuario`, `emailUsuario`, `senhaUsuario`, `nivelUsuario`) VALUES
-(1, 'assets/img/20260312_142704.jpg', 'Elaine Rezende', '2026-03-09', 'Curiúva', 'elaine@gmail.com', 'fd3a5e3e168d5bea9757b2ce6c656eba', ''),
-(2, 'assets/img/Logo_Unimarket_Branco.png', 'Nani Admin', '2026-03-29', 'Telêmaco Borba', 'f@g', '86871b9b1ab33b0834d455c540d82e89', ''),
-(3, 'assets/img/Logo_UniMarket_Preto.png', 'Julinha', '2026-03-11', 'Reserva', 'g@j', '0cb74a0c216befd6cdb7745b1a4186ff', ''),
-(4, 'assets/img/people04.jpg', 'nani', '2026-03-30', 'Telêmaco Borba', 'nani@gmail', '202cb962ac59075b964b07152d234b70', 'administrador'),
-(5, 'assets/img/stanley.png', 'halenn', '2026-04-13', 'Telêmaco Borba', 'helenn@gmail', '202cb962ac59075b964b07152d234b70', 'usuario');
+(4, 'assets/img/people04.jpg', 'Elaine Admin', '2000-01-01', 'Curiúva', 'admin@cubo.com', '202cb962ac59075b964b07152d234b70', 'administrador'),
+(5, 'assets/img/stanley.png', 'Cliente Cubista', '2005-05-05', 'Curiúva', 'cliente@cubo.com', '202cb962ac59075b964b07152d234b70', 'usuario');
 
 --
 -- Índices para tabelas despejadas
@@ -106,7 +104,9 @@ ALTER TABLE `anuncios`
 -- Índices de tabela `compras`
 --
 ALTER TABLE `compras`
-  ADD PRIMARY KEY (`idCompra`);
+  ADD PRIMARY KEY (`idCompra`),
+  ADD KEY `fk_compras_usuarios` (`Usuarios_idUsuario`),
+  ADD KEY `fk_compras_anuncios` (`Anuncios_idAnuncio`);
 
 --
 -- Índices de tabela `usuarios`
@@ -144,7 +144,14 @@ ALTER TABLE `usuarios`
 -- Restrições para tabelas `anuncios`
 --
 ALTER TABLE `anuncios`
-  ADD CONSTRAINT `fk_anuncios_usuarios` FOREIGN KEY (`Usuarios_idUsuario`) REFERENCES `usuarios` (`idUsuario`);
+  ADD CONSTRAINT `fk_anuncios_usuarios` FOREIGN KEY (`Usuarios_idUsuario`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `compras`
+--
+ALTER TABLE `compras`
+  ADD CONSTRAINT `fk_compras_usuarios` FOREIGN KEY (`Usuarios_idUsuario`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_compras_anuncios` FOREIGN KEY (`Anuncios_idAnuncio`) REFERENCES `anuncios` (`idAnuncio`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
