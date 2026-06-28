@@ -4,10 +4,33 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Inclui a conexão e o cabeçalho moderno do seu site
+// Inclui a conexão com o banco de dados
 include "conexaoBD.php";
 /** @var mysqli $conn */
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['metodoPagamento'])) {
+    
+    // Defesa de Sessão: Garante que só usuários logados fecham pedidos
+    if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+        header("Location: formLogin.php");
+        exit();
+    }
+    
+    $idUsuario = $_SESSION['idUsuario'];
+    
+    // Operação de DELETE do CRUD do Carrinho (Simulação de compra finalizada)
+    $queryLimpar = "DELETE FROM carrinho WHERE idUsuario = '$idUsuario'";
+    $executou = mysqli_query($conn, $queryLimpar);
+    
+    if ($executou) {
+        // Exibe o alerta visual de sucesso e atualiza a página limpando os dados do POST
+        echo "<script>alert('Pedido finalizado com sucesso! Seu carrinho foi esvaziado.'); window.location.href='index.php';</script>";
+        exit();
+    }
+}
+// =========================================================================
+
+// Inclui o cabeçalho moderno do seu site
 include "header.php";
 ?>
 
@@ -73,6 +96,7 @@ include "header.php";
         </div>
 
         <?php
+        // Lógica de Consulta ao Banco com Filtro
         $categoriaSelecionada = isset($_GET['filtrarCategoria']) ? $_GET['filtrarCategoria'] : 'Todos';
 
         if ($categoriaSelecionada != 'Todos') {
@@ -84,6 +108,7 @@ include "header.php";
         $resAnuncios = mysqli_query($conn, $sqlAnuncios);
         $totalProdutos = mysqli_num_rows($resAnuncios);
 
+        // Badge indicador do total de modelos
         echo "
             <div class='text-center mb-5'>
                 <span class='badge bg-white text-dark shadow-sm border px-3 py-2 rounded-pill fw-medium text-muted'>
@@ -142,6 +167,7 @@ include "header.php";
                     <?php
                 }
             } else {
+                // Estado vazio caso não encontre nenhum registro
                 echo "
                     <div class='col-12 text-center py-5'>
                         <div class='text-muted'>
@@ -152,6 +178,8 @@ include "header.php";
                     </div>
                 ";
             }
+            
+            // Fecha a conexão após a execução das queries
             mysqli_close($conn);
             ?>
 
