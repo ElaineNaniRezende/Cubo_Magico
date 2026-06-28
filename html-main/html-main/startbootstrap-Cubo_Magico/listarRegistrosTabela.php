@@ -8,6 +8,9 @@ include "conexaoBD.php";
 /** @var mysqli $conn */ 
 
 include "header.php"; 
+
+// Captura qual aba deve ficar ativa (se não tiver nenhuma na URL, a padrão é 'usuarios')
+$abaAtiva = isset($_GET['aba']) ? $_GET['aba'] : 'usuarios';
 ?>
 
 <style>
@@ -87,22 +90,23 @@ include "header.php";
             </div>
         </div>
 
-        <ul class="nav nav-tabs border-bottom-0 mb-4 justify-content-center gap-2" id="panelTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active shadow-sm border" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios-pane" type="button" role="tab">
+        <ul class="nav nav-tabs border-bottom-0 mb-4 justify-content-center gap-2">
+            <li class="nav-item">
+                <a class="nav-link shadow-sm border <?php echo ($abaAtiva == 'usuarios') ? 'active' : ''; ?>" href="listarRegistrosTabela.php?aba=usuarios">
                     <i class="bi bi-people-fill me-2"></i> Gerenciar Usuários
-                </button>
+                </a>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link shadow-sm border" id="produtos-tab" data-bs-toggle="tab" data-bs-target="#produtos-pane" type="button" role="tab">
+            <li class="nav-item">
+                <a class="nav-link shadow-sm border <?php echo ($abaAtiva == 'produtos') ? 'active' : ''; ?>" href="listarRegistrosTabela.php?aba=produtos">
                     <i class="bi bi-box-seam-fill me-2"></i> Gerenciar Produtos / Anúncios
-                </button>
+                </a>
             </li>
         </ul>
 
-        <div class="tab-content" id="panelTabsContent">
+        <div class="tab-content">
             
-            <div class="tab-pane fade show active" id="usuarios-pane" role="tabpanel" aria-labelledby="usuarios-tab">
+            <?php if ($abaAtiva == 'usuarios'): ?>
+            <div class="tab-pane fade show active">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold text-dark m-0"><i class="bi bi-person-lines-fill me-2 text-warning"></i>Lista de Usuários</h5>
                     <a href="formUsuario.php" class="btn btn-warning btn-sm fw-bold text-dark shadow-sm">
@@ -151,8 +155,10 @@ include "header.php";
                     </table>
                 </div>
             </div>
+            <?php endif; ?>
 
-            <div class="tab-pane fade" id="produtos-pane" role="tabpanel" aria-labelledby="produtos-tab">
+            <?php if ($abaAtiva == 'produtos'): ?>
+            <div class="tab-pane fade show active">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold text-dark m-0"><i class="bi bi-grid-3x3-gap-fill me-2 text-warning"></i>Lista de Produtos Ofertados</h5>
                     <a href="formAnuncio.php" class="btn btn-dark btn-sm fw-bold text-warning shadow-sm">
@@ -200,6 +206,7 @@ include "header.php";
                     </table>
                 </div>
             </div>
+            <?php endif; ?>
 
         </div> 
     </div>

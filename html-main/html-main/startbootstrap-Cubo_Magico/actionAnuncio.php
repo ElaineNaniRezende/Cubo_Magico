@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 🔐 TRAVA DE SEGURANÇA: Só o Administrador pode processar essa página
+// 🔐 TRAVA DE SEGURANÇA: Só o Administrador pode acessar essa página
 if (!isset($_SESSION['logado']) || $_SESSION['nivelUsuario'] !== 'administrador') {
     header("Location: index.php");
     exit();
@@ -18,21 +18,15 @@ include "header.php";
         <div class="col-md-10 col-lg-8">
 
             <?php
-            // Verifica o método de requisição do servidor
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
-                // Define as variáveis limpas
                 $fotoAnuncio = $tituloAnuncio = $categoriaAnuncio = $descricaoAnuncio = $valorAnuncio = $dataAnuncio = $horaAnuncio = "";
                 $erroPreenchimento = false;
 
-                // Captura o ID do Administrador logado na sessão para a Chave Estrangeira
                 $idUsuario = $_SESSION['idUsuario'];
-
-                // Captura a data e a hora atuais do servidor
                 $dataAnuncio = date("Y-m-d");
                 $horaAnuncio = date("H:i:s");
 
-                // Validação do campo tituloAnuncio
                 if (empty($_POST["tituloAnuncio"])) {
                     echo "<div class='alert alert-warning text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-exclamation-triangle-fill me-2'></i>O campo TÍTULO DO ANÚNCIO é obrigatório!</div>";
                     $erroPreenchimento = true;
@@ -40,7 +34,6 @@ include "header.php";
                     $tituloAnuncio = filtrar_entrada($_POST["tituloAnuncio"]);
                 }
 
-                // Validação do campo categoriaAnuncio
                 if (empty($_POST["categoriaAnuncio"])) {
                     echo "<div class='alert alert-warning text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-exclamation-triangle-fill me-2'></i>O campo CATEGORIA é obrigatório!</div>";
                     $erroPreenchimento = true;
@@ -48,7 +41,6 @@ include "header.php";
                     $categoriaAnuncio = filtrar_entrada($_POST["categoriaAnuncio"]);
                 }
 
-                // Validação do campo descricaoAnuncio
                 if (empty($_POST["descricaoAnuncio"])) {
                     echo "<div class='alert alert-warning text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-exclamation-triangle-fill me-2'></i>O campo DESCRIÇÃO é obrigatório!</div>";
                     $erroPreenchimento = true;
@@ -56,7 +48,6 @@ include "header.php";
                     $descricaoAnuncio = filtrar_entrada($_POST["descricaoAnuncio"]);
                 }
 
-                // Validação do campo valorAnuncio
                 if (empty($_POST["valorAnuncio"])) {
                     echo "<div class='alert alert-warning text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-exclamation-triangle-fill me-2'></i>O campo VALOR é obrigatório!</div>";
                     $erroPreenchimento = true;
@@ -72,27 +63,22 @@ include "header.php";
                 $erroUpload   = false; 
 
                 if ($_FILES["fotoAnuncio"]["size"] != 0) {
-                    
-                    // Valida tamanho máximo de 5MB
                     if ($_FILES["fotoAnuncio"]["size"] > 5000000) {
                         echo "<div class='alert alert-danger text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-x-circle-fill me-2'></i>A FOTO deve ter tamanho máximo de 5MB!</div>";
                         $erroUpload = true;
                     }
 
-                    // Valida formatos permitidos
                     if ($tipoDaImagem != "jpg" && $tipoDaImagem != "jpeg" && $tipoDaImagem != "png" && $tipoDaImagem != "webp") {
                         echo "<div class='alert alert-danger text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-x-circle-fill me-2'></i>Formatos permitidos para FOTO: JPG, JPEG, PNG ou WEBP!</div>";
                         $erroUpload = true;
                     }
 
-                    // Se não houve erros de tamanho/formato, tenta mover o arquivo para a pasta do projeto
                     if (!$erroUpload) {
                         if (!move_uploaded_file($_FILES["fotoAnuncio"]["tmp_name"], $fotoAnuncio)) {
-                            echo "<div class='alert alert-danger text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-x-circle-fill me-2'></i>Erro ao mover a foto para o diretório de destino. Certifique-se de que a pasta '$diretorio' existe!</div>";
+                            echo "<div class='alert alert-danger text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-x-circle-fill me-2'></i>Erro ao mover a foto para o diretório de destino.</div>";
                             $erroUpload = true;
                         }
                     }
-
                 } else {
                     echo "<div class='alert alert-warning text-center fw-bold rounded-3 shadow-sm mb-3'><i class='bi bi-exclamation-triangle-fill me-2'></i>A FOTO do produto é obrigatória!</div>";
                     $erroUpload = true;
@@ -104,15 +90,13 @@ include "header.php";
                     include "conexaoBD.php";
                     /** @var mysqli $conn */
 
-                    // Query ajustada para o nome correto das colunas e tabelas em minúsculo
                     $inserirAnuncio = "INSERT INTO anuncios (Usuarios_idUsuario, fotoAnuncio, tituloAnuncio, categoriaAnuncio, descricaoAnuncio, valorAnuncio, dataAnuncio, horaAnuncio, statusAnuncio) 
                                        VALUES ('$idUsuario', '$fotoAnuncio', '$tituloAnuncio', '$categoriaAnuncio', '$descricaoAnuncio', '$valorAnuncio', '$dataAnuncio', '$horaAnuncio', 'disponivel')";
 
                     if (mysqli_query($conn, $inserirAnuncio)) {
-                        
-                        // Mostra painel de resumo elegante em caso de sucesso
+                        // Exibe a tela de resumo com os botões ajustados
                         echo "
-                            <div class='card shadow border-0 rounded-3 overflow-hidden animate__animated animate__fadeIn'>
+                            <div class='card shadow border-0 rounded-3 overflow-hidden'>
                                 <div class='card-header bg-success text-white text-center py-3'>
                                     <h5 class='mb-0 fw-bold text-uppercase'><i class='bi bi-check-circle-fill me-2'></i> Produto Cadastrado com Sucesso!</h5>
                                 </div>
@@ -146,7 +130,7 @@ include "header.php";
 
                                     <div class='mt-4 d-flex gap-2 justify-content-center'>
                                         <a href='formAnuncio.php' class='btn btn-outline-dark fw-bold btn-sm px-3'><i class='bi bi-plus-circle'></i> Cadastrar Outro</a>
-                                        <a href='index.php' class='btn btn-warning fw-bold btn-sm px-4 text-dark'><i class='bi bi-house-door'></i> Ir para a Loja</a>
+                                        <a href='listarRegistrosTabela.php?aba=produtos' class='btn btn-warning fw-bold btn-sm px-4 text-dark'><i class='bi bi-sliders'></i> Ir para o Painel</a>
                                     </div>
                                 </div>
                             </div>
@@ -164,12 +148,10 @@ include "header.php";
                 }
 
             } else {
-                // Se tentarem acessar o link direto, joga de volta pro formulário
                 header("Location: formAnuncio.php");
                 exit();
             }
 
-            // Função nativa de higienização de strings
             function filtrar_entrada($dado) {
                 $dado = trim($dado);
                 $dado = stripslashes($dado);

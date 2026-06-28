@@ -80,7 +80,9 @@ include "header.php";
                                 <button type="submit" class="btn btn-warning btn-lg fw-bold text-dark shadow-sm">
                                     <i class="bi bi-check-circle-fill me-2"></i> Publicar Produto
                                 </button>
-                                <a href="index.php" class="btn btn-light btn-sm text-secondary border mt-1">Cancelar</a>
+                                <a href="listarRegistrosTabela.php?aba=produtos" class="btn btn-light btn-sm text-secondary border mt-1">
+                                    <i class="bi bi-arrow-left-short"></i> Cancelar e Voltar
+                                </a>
                             </div>
 
                         </form>
