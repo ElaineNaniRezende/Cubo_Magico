@@ -4,6 +4,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Garante que a sessão está ativa para capturar as mensagens de sucesso/erro
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include "conexaoBD.php";
 /** @var mysqli $conn */ 
 
@@ -159,6 +164,23 @@ $abaAtiva = isset($_GET['aba']) ? $_GET['aba'] : 'usuarios';
 
             <?php if ($abaAtiva == 'produtos'): ?>
             <div class="tab-pane fade show active">
+                
+                <?php if (isset($_SESSION['mensagem_sucesso'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show text-center fw-bold shadow-sm mb-3" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i> <?php echo $_SESSION['mensagem_sucesso']; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <?php unset($_SESSION['mensagem_sucesso']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['mensagem_erro'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show text-center fw-bold shadow-sm mb-3" role="alert">
+                        <i class="bi bi-x-octagon-fill me-2"></i> <?php echo $_SESSION['mensagem_erro']; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <?php unset($_SESSION['mensagem_erro']); ?>
+                <?php endif; ?>
+
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold text-dark m-0"><i class="bi bi-grid-3x3-gap-fill me-2 text-warning"></i>Lista de Produtos Ofertados</h5>
                     <a href="formAnuncio.php" class="btn btn-dark btn-sm fw-bold text-warning shadow-sm">
