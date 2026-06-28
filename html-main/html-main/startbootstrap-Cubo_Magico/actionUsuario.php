@@ -1,14 +1,19 @@
 <?php
+// 1. Inicia a sessão na primeira linha para podermos verificar quem está logado
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // ATIVAÇÃO DE ERROS PARA DETECÇÃO NO NAVEGADOR
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// 1. Inclui a conexão logo na primeira linha. O VS Code passa a reconhecer o $conn no arquivo inteiro!
+// 2. Inclui a conexão com o banco
 include "conexaoBD.php";
 /** @var mysqli $conn */
 
-// 2. Protege a função de filtragem. Se ela já existir no header.php, o VS Code NÃO vai dar erro!
+// 3. Protege a função de filtragem
 if (!function_exists('filtrar_entrada')) {
     function filtrar_entrada($dado) {
         $dado = trim($dado); 
@@ -21,11 +26,11 @@ if (!function_exists('filtrar_entrada')) {
 // Verifica o método de requisição do servidor
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    // Define o bloco de variáveis para armazenar as informações recebidas do formulário
+    // Bloco de variáveis para armazenar as informações
     $nomeUsuario = $dataNascimentoUsuario = $cidadeUsuario = $emailUsuario = $senhaUsuario = $confirmarSenhaUsuario = "";
     $diaNascimentoUsuario = $mesNascimentoUsuario = $anoNascimentoUsuario = "";
 
-    // Variável booleana para controle de erros de preenchimento
+    // Controle de erros
     $erroPreenchimento = false;
 
     // Validação do campo nomeUsuario
@@ -71,7 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $emailUsuario = filtrar_entrada($_POST["emailUsuario"]);
         
-        // Uso direto da conexão reconhecida globalmente
         $verificarEmail = "SELECT emailUsuario FROM usuarios WHERE emailUsuario LIKE '$emailUsuario' ";
         $res = mysqli_query($conn, $verificarEmail);
 
@@ -122,11 +126,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Inclui o cabeçalho do site
-    include "header.php";
-
-    // Mostra erro ou faz o INSERT
+    // Se houver erro, exibe a mensagem de erro padrão
     if ($erroPreenchimento || $erroUpload) {
+        include "header.php";
         echo "
             <div class='container py-5'>
                 <div class='alert alert-warning text-center'>
@@ -137,17 +139,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         ";
+        include "footer.php";
     } else {
         $nivelPadrao = "usuario";
 
-       // Query estruturada de inserção usando o nome correto da coluna (cidadeUsuario)
-$inserirUsuario = "INSERT INTO usuarios (fotoUsuario, nomeUsuario, dataNascimentoUsuario, cidadeUsuario, emailUsuario, senhaUsuario, nivelUsuario)
-                    VALUES ('$fotoUsuario', '$nomeUsuario', '$dataNascimentoUsuario', '$cidadeUsuario', '$emailUsuario', '$senhaUsuario', '$nivelPadrao')";
+        $inserirUsuario = "INSERT INTO usuarios (fotoUsuario, nomeUsuario, dataNascimentoUsuario, cidadeUsuario, emailUsuario, senhaUsuario, nivelUsuario)
+                           VALUES ('$fotoUsuario', '$nomeUsuario', '$dataNascimentoUsuario', '$cidadeUsuario', '$emailUsuario', '$senhaUsuario', '$nivelPadrao')";
 
         if (mysqli_query($conn, $inserirUsuario)) {
+            
+            // ✨ REDIRECIONAMENTO AUTOMÁTICO DO ADMINISTRADOR (Antes de renderizar o HTML)
+            // Criamos uma checagem abrangente: se houver qualquer indício de que você está logada como admin, volta na hora!
+            $isAdmin = false;
+            if (isset($_SESSION['nivelUsuario']) && ($_SESSION['nivelUsuario'] == 'admin' || $_SESSION['nivelUsuario'] == 'administrador')) {
+                $isAdmin = true;
+            } elseif (isset($_SESSION['nomeUsuario']) && strpos(strtolower($_SESSION['nomeUsuario']), 'admin') !== false) {
+                // Checagem extra de segurança caso o nível esteja guardado com outro nome
+                $isAdmin = true;
+            }
+
+            if ($isAdmin) {
+                header("Location: listarRegistrosTabela.php");
+                exit();
+            }
+            
+            // SÓ CHEGA AQUI SE FOR UM VISITANTE COMUM SE CADASTRANDO
+            include "header.php";
             echo "
                 <div class='container py-5'>
-                    <div class='alert alert-success text-center'><strong>USUÁRIO</strong> cadastrado com sucesso!</div>
+                    <div class='alert alert-success text-center'><strong>SUCESSO!</strong> Seu cadastro foi realizado.</div>
                     <div class='container mt-3 text-center'>
                         <img src='$fotoUsuario' style='width:150px' class='img-thumbnail mb-3'>
                     </div>
@@ -158,11 +178,16 @@ $inserirUsuario = "INSERT INTO usuarios (fotoUsuario, nomeUsuario, dataNasciment
                         <tr><th>EMAIL</th><td>$emailUsuario</td></tr>
                     </table>
                     <div class='text-center mt-4'>
-                        <a href='formLogin.php' class='btn btn-success'>Ir para a Tela de Login</a>
+                        <a href='formLogin.php' class='btn btn-success fw-bold shadow-sm px-4'>
+                            <i class='bi bi-box-arrow-in-right me-1'></i> Ir para a Tela de Login
+                        </a>
                     </div>
                 </div>
             ";
+            include "footer.php";
+            
         } else {
+            include "header.php";
             echo "
                 <div class='container py-5'>
                     <div class='alert alert-danger text-center'>
@@ -171,11 +196,9 @@ $inserirUsuario = "INSERT INTO usuarios (fotoUsuario, nomeUsuario, dataNasciment
                     </div>
                 </div>
             ";
+            include "footer.php";
         }
     }
-
-    // Fecha o layout com o rodapé
-    include "footer.php";
 
 } else {
     header("location:formUsuario.php");
