@@ -13,4 +13,9 @@
         echo "<p>Erro ao tentar conectar a aplicação à base de dados <strong>$database</strong></p>";
     }
 
+    // 🌟 COMPLEMENTO MÁGICO PARA O VS CODE ZERAR OS ERROS:
+    // Garante que o editor entenda que essa variável é global e do tipo mysqli
+    global $conn;
+    /** @var mysqli $conn */
+
 ?>

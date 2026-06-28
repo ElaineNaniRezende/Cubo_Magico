@@ -1,6 +1,5 @@
 <?php include "header.php" ?>
 
-    <!-- Seção para conteúdo da página -->
     <section class="py-5">
 
         <div class="d-flex justify-content-center mb-3">
@@ -13,8 +12,8 @@
                     <form action="actionUsuario.php" method="POST" class="was-validated" enctype="multipart/form-data">
 
                         <div class="form-floating mt-3 mb-3">
-                            <input type="file" class="form-control" id="fotoUsuario" placeholder="Foto" name="fotoUsuario" required>
-                            <label for="fotoUsuario">Foto</label>
+                            <input type="file" class="form-control" id="fotoUsuario" placeholder="Foto" name="fotoUsuario">
+                            <label for="fotoUsuario">Foto (Opcional)</label>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback"></div>
                         </div>
