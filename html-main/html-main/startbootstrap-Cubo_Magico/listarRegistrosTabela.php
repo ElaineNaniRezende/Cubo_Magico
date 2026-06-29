@@ -34,7 +34,7 @@ $abaAtiva = isset($_GET['aba']) ? $_GET['aba'] : 'usuarios';
         padding: 12px 20px;
     }
     .nav-tabs .nav-link.active {
-        color: #ffc107 !important;
+        color: #0077b6 !important;
         background-color: #212529 !important;
         border-radius: 8px 8px 0 0;
     }

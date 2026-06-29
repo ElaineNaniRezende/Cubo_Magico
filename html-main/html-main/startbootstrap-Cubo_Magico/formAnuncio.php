@@ -51,11 +51,26 @@ include "header.php";
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="categoriaAnuncio" name="categoriaAnuncio" required>
                                     <option value="" disabled selected>Selecione uma Categoria...</option>
-                                    <option value="Cubo 2x2x2">Cubo 2x2x2</option>
-                                    <option value="Cubo 3x3x3">Cubo 3x3x3</option>
-                                    <option value="Cubo 4x4x4 e Maiores">Cubo 4x4x4 e Maiores</option>
-                                    <option value="Modificações / Pyraminx / Megaminx">Modificações (Pyraminx, Megaminx...)</option>
-                                    <option value="Acessórios e Lubrificantes">Acessórios e Lubrificantes</option>
+
+                                    <option value="Cubo 2x2x2 (Pocket Cube)">Cubo 2x2x2 (Pocket Cube)</option>
+
+                                    <option value="Cubo 3x3x3 (Clássico)">Cubo 3x3x3 (Clássico)</option>
+
+                                    <option value="Cubo 4x4x4 (Rubik's Revenge)">Cubo 4x4x4 (Rubik's Revenge)</option>
+
+                                    <option value="Cubo 5x5x5 (Professor's Cube)">Cubo 5x5x5 (Professor's Cube)</option>
+
+                                    <option value="Cubo 6x6x6">Cubo 6x6x6</option>
+
+                                    <option value="Cubo 7x7x7">Cubo 7x7x7</option>
+
+                                    <option value="Pyraminx">Pyraminx</option>
+
+                                    <option value="Megaminx">Megaminx</option>
+
+                                    <option value="Skewb">Skewb</option>
+
+                                    <option value="Square-1">Square-1</option>
                                 </select>
                                 <label for="categoriaAnuncio">Categoria do Cubo</label>
                                 <div class="invalid-feedback">Selecione uma categoria válida.</div>

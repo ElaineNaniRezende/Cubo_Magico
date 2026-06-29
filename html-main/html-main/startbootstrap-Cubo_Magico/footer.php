@@ -1,5 +1,5 @@
 <!-- FOOTER   -->
-  <footer class="bg-dark text-white py-4">
+  <footer class="bg-dark text-white py-4 mt-auto">
     <div class="container d-flex justify-content-between align-items-center">
       <small>© Cubo Mágico — 2025</small>
       <div>
@@ -8,4 +8,5 @@
       </div>
     </div>
   </footer>
+  
 

@@ -80,13 +80,49 @@ include "header.php";
 
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="categoriaAnuncio" name="categoriaAnuncio" required>
-                                    <option value="Cubo 2x2x2" <?php echo ($prod['categoriaAnuncio'] == 'Cubo 2x2x2') ? 'selected' : ''; ?>>Cubo 2x2x2</option>
-                                    <option value="Cubo 3x3x3" <?php echo ($prod['categoriaAnuncio'] == 'Cubo 3x3x3') ? 'selected' : ''; ?>>Cubo 3x3x3</option>
-                                    <option value="Cubo 4x4x4 e Maiores" <?php echo ($prod['categoriaAnuncio'] == 'Cubo 4x4x4 e Maiores') ? 'selected' : ''; ?>>Cubo 4x4x4 e Maiores</option>
-                                    <option value="Modificações / Pyraminx / Megaminx" <?php echo ($prod['categoriaAnuncio'] == 'Modificações / Pyraminx / Megaminx') ? 'selected' : ''; ?>>Modificações (Pyraminx, Megaminx...)</option>
-                                    <option value="Acessórios e Lubrificantes" <?php echo ($prod['categoriaAnuncio'] == 'Acessórios e Lubrificantes') ? 'selected' : ''; ?>>Acessórios e Lubrificantes</option>
+
+                                    <option value="Cubo 2x2x2 (Pocket Cube)" <?php echo ($prod['categoriaAnuncio'] == 'Cubo 2x2x2 (Pocket Cube)') ? 'selected' : ''; ?>>
+                                        Cubo 2x2x2 (Pocket Cube)
+                                    </option>
+
+                                    <option value="Cubo 3x3x3 (Clássico)" <?php echo ($prod['categoriaAnuncio'] == 'Cubo 3x3x3 (Clássico)') ? 'selected' : ''; ?>>
+                                        Cubo 3x3x3 (Clássico)
+                                    </option>
+
+                                    <option value="Cubo 4x4x4 (Rubik's Revenge)" <?php echo ($prod['categoriaAnuncio'] == "Cubo 4x4x4 (Rubik's Revenge)") ? 'selected' : ''; ?>>
+                                        Cubo 4x4x4 (Rubik's Revenge)
+                                    </option>
+
+                                    <option value="Cubo 5x5x5 (Professor's Cube)" <?php echo ($prod['categoriaAnuncio'] == "Cubo 5x5x5 (Professor's Cube)") ? 'selected' : ''; ?>>
+                                        Cubo 5x5x5 (Professor's Cube)
+                                    </option>
+
+                                    <option value="Cubo 6x6x6" <?php echo ($prod['categoriaAnuncio'] == 'Cubo 6x6x6') ? 'selected' : ''; ?>>
+                                        Cubo 6x6x6
+                                    </option>
+
+                                    <option value="Cubo 7x7x7" <?php echo ($prod['categoriaAnuncio'] == 'Cubo 7x7x7') ? 'selected' : ''; ?>>
+                                        Cubo 7x7x7
+                                    </option>
+
+                                    <option value="Pyraminx" <?php echo ($prod['categoriaAnuncio'] == 'Pyraminx') ? 'selected' : ''; ?>>
+                                        Pyraminx
+                                    </option>
+
+                                    <option value="Megaminx" <?php echo ($prod['categoriaAnuncio'] == 'Megaminx') ? 'selected' : ''; ?>>
+                                        Megaminx
+                                    </option>
+
+                                    <option value="Skewb" <?php echo ($prod['categoriaAnuncio'] == 'Skewb') ? 'selected' : ''; ?>>
+                                        Skewb
+                                    </option>
+
+                                    <option value="Square-1" <?php echo ($prod['categoriaAnuncio'] == 'Square-1') ? 'selected' : ''; ?>>
+                                        Square-1
+                                    </option>
+
                                 </select>
-                                <label for="categoriaAnuncio">Categoria do Cubo</label>
+                                <label for="categoriaAnuncio">Categoria Produto</label>
                                 <div class="invalid-feedback">Selecione uma categoria válida.</div>
                             </div>
 
